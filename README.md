@@ -32,8 +32,10 @@ This application provides a graphical representation of the A* path-finding algo
 - Run `python main.py` if on Windows
 
 ## Command Line Arguments
-1. `--cell-size`
-Usage: `python main.py`
+1. `--width`
+Usage: `python main.py --width:<int>`
+2. `--algorithm`
+Usage: `python main.py --algorithm:<string>`
 
 ## Contributing
 This project is open to contributions, bug reports, and suggestions. If you've found a bug or have a suggestion, please open an issue.
