@@ -2,6 +2,14 @@ import pygame
 from spot import make_grid, draw, get_clicked_pos
 from astar import AStar
 from dijkstra import Dijkstra
+import argparse
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument("-a", "--algorithm", help="Name of the algorithm")
+parser.add_argument("-w", "--width", help="Width of the grid")
+
+args = parser.parse_args()
 
 WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
@@ -52,9 +60,15 @@ def main(win, width):
 						for spot in row:
 							spot.update_neighbors(grid)
 					
+					if args.algorithm == 'astar':
+						algorithm = AStar(grid, lambda: draw(win, grid, ROWS, width))
+					elif args.algorithm == 'dijkstra':
+						algorithm = Dijkstra(grid, lambda: draw(win, grid, ROWS, width))
+					else:
+						algorithm = AStar(grid, lambda: draw(win, grid, ROWS, width))
 
-					algorithms = AStar(grid, lambda: draw(win, grid, ROWS, width))
-					algorithms.search(start, end)
+					# algorithms = AStar(grid, lambda: draw(win, grid, ROWS, width))
+					algorithm.search(start, end)
 
 				if event.key == pygame.K_c:
 					start = None
