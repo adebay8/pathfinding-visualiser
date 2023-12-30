@@ -1,21 +1,11 @@
 import pygame
 from spot import make_grid, draw, get_clicked_pos
-from astar import algorithm
+from astar import AStar
+from dijkstra import Dijkstra
 
 WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("Path Finding Algorithm")
-
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 255, 0)
-YELLOW = (255, 255, 0)
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-PURPLE = (128, 0, 128)
-ORANGE = (255, 165 ,0)
-GREY = (128, 128, 128)
-TURQUOISE = (64, 224, 208)
 
 def main(win, width):
 	ROWS = 50
@@ -61,8 +51,10 @@ def main(win, width):
 					for row in grid:
 						for spot in row:
 							spot.update_neighbors(grid)
+					
 
-					algorithm(lambda: draw(win, grid, ROWS, width), grid, start, end)
+					algorithms = AStar(grid, lambda: draw(win, grid, ROWS, width))
+					algorithms.search(start, end)
 
 				if event.key == pygame.K_c:
 					start = None

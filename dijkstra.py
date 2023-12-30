@@ -1,16 +1,10 @@
 import pygame
 from queue import PriorityQueue
 
-
-class AStar:
+class Dijkstra:
     def __init__(self, grid, draw):
         self.grid = grid
         self.draw = draw
-
-    def h(self, p1, p2):
-        x1, y1 = p1
-        x2, y2 = p2
-        return abs(x1 - x2) + abs(y1 - y2)
 
     def reconstruct_path(self, came_from, current):
         while current in came_from:
@@ -25,8 +19,6 @@ class AStar:
         came_from = {}
         g_score = {spot: float("inf") for row in self.grid for spot in row}
         g_score[start] = 0
-        f_score = {spot: float("inf") for row in self.grid for spot in row}
-        f_score[start] = self.h(start.get_pos(), end.get_pos())
         open_set_hash = {start}
 
         while not open_set.empty():
@@ -48,10 +40,9 @@ class AStar:
                 if temp_g_score < g_score[neighbor]:
                     came_from[neighbor] = current
                     g_score[neighbor] = temp_g_score
-                    f_score[neighbor] = temp_g_score + self.h(neighbor.get_pos(), end.get_pos())
                     if neighbor not in open_set_hash:
                         count += 1
-                        open_set.put((f_score[neighbor], count, neighbor))
+                        open_set.put((g_score[neighbor], count, neighbor))
                         open_set_hash.add(neighbor)
                         neighbor.make_open()
 
@@ -61,4 +52,3 @@ class AStar:
                 current.make_closed()
 
         return False
-
